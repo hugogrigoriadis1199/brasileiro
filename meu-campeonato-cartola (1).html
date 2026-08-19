@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Viperes League</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,.25);
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            opacity: .9;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.2);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #4ade80;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #cbd5e1;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            background: #0f172a;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #22c55e;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: .9;
+        }
+
+        .btn-green {
+            background: #22c55e;
+            color: #052e16;
+        }
+
+        .btn-blue {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-red {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-gray {
+            background: #475569;
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .round-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .score-table th,
+        .score-table td {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            text-align: left;
+        }
+
+        .score-table th {
+            color: #4ade80;
+            background: #172033;
+        }
+
+        .score-table td:last-child,
+        .score-table th:last-child {
+            text-align: center;
+            width: 150px;
+        }
+
+        .score-input {
+            width: 120px;
+            text-align: center;
+        }
+
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ranking-table th,
+        .ranking-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .ranking-table th {
+            color: #4ade80;
+            background: #172033;
+        }
+
+        .ranking-table td {
+            font-size: 16px;
+        }
+
+        .position {
+            font-size: 22px;
+            font-weight: bold;
+            width: 70px;
+            text-align: center;
+        }
+
+        .player-name {
+            font-weight: bold;
+        }
+
+        .total {
+            color: #4ade80;
+            font-size: 20px !important;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .round-score {
+            text-align: center;
+        }
+
+        .podium {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .podium-card {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .podium-card.first {
+            border-color: #facc15;
+        }
+
+        .podium-card.second {
+            border-color: #cbd5e1;
+        }
+
+        .podium-card.third {
+            border-color: #d97706;
+        }
+
+        .medal {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .podium-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .podium-points {
+            color: #4ade80;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .history-container {
+            overflow-x: auto;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            text-align: center;
+        }
+
+        .history-table th:first-child,
+        .history-table td:first-child {
+            text-align: left;
+            position: sticky;
+            left: 0;
+            background: #1e293b;
+        }
+
+        .history-table th {
+            color: #4ade80;
+        }
+
+        .round-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .round-item {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .round-item strong {
+            color: #4ade80;
+        }
+
+        .empty {
+            text-align: center;
+            color: #94a3b8;
+            padding: 30px;
+        }
+
+        .status {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .status.success {
+            display: block;
+            background: #14532d;
+            color: #bbf7d0;
+        }
+
+        .status.error {
+            display: block;
+            background: #7f1d1d;
+            color: #fecaca;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        @media (max-width: 700px) {
+            header h1 {
+                font-size: 25px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .round-header {
+                grid-template-columns: 1fr;
+            }
+
+            .podium {
+                grid-template-columns: 1fr;
+            }
+
+            .score-table th,
+            .score-table td {
+                padding: 9px 6px;
+            }
+
+            .score-input {
+                width: 90px;
+            }
+
+            .ranking-table th,
+            .ranking-table td {
+                padding: 10px 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>⚽ Meu Campeonato Cartola</h1>
+    <p>Classificação, pontuação e histórico do campeonato</p>
+</header>
+
+<div class="container">
+
+    <div id="status" class="status"></div>
+
+    <!-- PARTICIPANTES -->
+    <section class="card">
+        <h2>👥 Participantes</h2>
+
+        <div class="config-grid" id="playersContainer">
+        </div>
+
+        <div class="actions">
+            <button class="btn-green" onclick="savePlayers()">
+                💾 Salvar participantes
+            </button>
+        </div>
+    </section>
+
+
+    <!-- CADASTRO DA RODADA -->
+    <section class="card">
+
+        <h2>📝 Lançar pontuação da rodada</h2>
+
+        <div class="round-header">
+
+            <div class="input-group">
+                <label for="roundNumber">Número da rodada</label>
+                <input
+                    type="number"
+                    id="roundNumber"
+                    min="1"
+                    placeholder="Ex: 1"
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="roundDate">Data da rodada</label>
+                <input
+                    type="date"
+                    id="roundDate"
+                >
+            </div>
+
+        </div>
+
+        <div style="overflow-x:auto;">
+
+            <table class="score-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Participante</th>
+                        <th>Pontuação</th>
+                    </tr>
+                </thead>
+
+                <tbody id="scoreBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="actions">
+
+            <button class="btn-green" onclick="saveRound()">
+                ✅ Salvar rodada
+            </button>
+
+            <button class="btn-gray" onclick="clearRoundForm()">
+                Limpar
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- CLASSIFICAÇÃO -->
+    <section class="card">
+
+        <h2>🏆 Classificação geral</h2>
+
+        <div id="podium" class="podium">
+        </div>
+
+        <div style="overflow-x:auto;">
+
+            <table class="ranking-table">
+
+                <thead>
+                    <tr>
+                        <th>Pos.</th>
+                        <th>Participante</th>
+                        <th>Rodadas</th>
+                        <th>Pontos</th>
+                    </tr>
+                </thead>
+
+                <tbody id="rankingBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- HISTÓRICO -->
+    <section class="card">
+
+        <h2>📊 Histórico das rodadas (últimas 5)</h2>
+
+        <div class="history-container">
+
+            <table class="history-table">
+
+                <thead id="historyHead">
+                </thead>
+
+                <tbody id="historyBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- RODADAS CADASTRADAS -->
+    <section class="card">
+
+        <h2>📅 Rodadas cadastradas</h2>
+
+        <div id="roundList" class="round-list">
+        </div>
+
+    </section>
+
+
+    <!-- BACKUP -->
+    <section class="card">
+
+        <h2>💾 Backup</h2>
+
+        <p style="color:#94a3b8; margin-bottom:15px;">
+            Faça um backup dos dados para não perder o campeonato.
+        </p>
+
+        <div class="actions">
+
+            <button class="btn-blue" onclick="exportData()">
+                📥 Baixar backup
+            </button>
+
+            <button class="btn-gray" onclick="document.getElementById('importFile').click()">
+                📤 Restaurar backup
+            </button>
+
+            <input
+                type="file"
+                id="importFile"
+                accept=".json"
+                style="display:none"
+                onchange="importData(event)"
+            >
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<footer>
+    Campeonato Cartola • Sistema de pontuação
+</footer>
+
+
+<script>
+
+    /*
+    =====================================================
+    DADOS
+    =====================================================
+    */
+
+    let players = JSON.parse(
+        localStorage.getItem("cartola_players")
+    ) || [];
+
+    let rounds = JSON.parse(
+        localStorage.getItem("cartola_rounds")
+    ) || [];
+
+    const stateApi = {
+        load: "/api/caregar",
+        save: "/api/salvar"
+    };
+
+    function persistLocalState() {
+        localStorage.setItem("cartola_players", JSON.stringify(players));
+        localStorage.setItem("cartola_rounds", JSON.stringify(rounds));
+    }
+
+    async function saveState() {
+        persistLocalState();
+
+        try {
+            const response = await fetch(stateApi.save, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ dados: { players, rounds } })
+            });
+
+            if (!response.ok) {
+                throw new Error("Falha ao salvar no servidor");
+            }
+        } catch (error) {
+            console.warn("Dados mantidos apenas neste navegador:", error);
+        }
+    }
+
+    async function loadState() {
+        try {
+            const response = await fetch(stateApi.load);
+            if (!response.ok) {
+                throw new Error("Falha ao carregar do servidor");
+            }
+
+            const data = await response.json();
+            if (Array.isArray(data.players) && Array.isArray(data.rounds)) {
+                players = data.players;
+                rounds = data.rounds;
+                persistLocalState();
+            }
+        } catch (error) {
+            console.warn("Usando dados locais:", error);
+        }
+    }
+
+
+    /*
+    =====================================================
+    INICIALIZAÇÃO
+    =====================================================
+    */
+
+    async function init() {
+
+        await loadState();
+
+        createPlayerInputs();
+
+        createScoreInputs();
+
+        renderRanking();
+
+        renderHistory();
+
+        renderRoundList();
+
+        document.getElementById("roundDate").value =
+            new Date().toISOString().split("T")[0];
+    }
+
+
+    /*
+    =====================================================
+    PARTICIPANTES
+    =====================================================
+    */
+
+    function createPlayerInputs() {
+
+        const container =
+            document.getElementById("playersContainer");
+
+        container.innerHTML = "";
+
+        for (let i = 0; i < 20; i++) {
+
+            const value = players[i] || `Participante ${i + 1}`;
+
+            container.innerHTML += `
+
+                <div class="input-group">
+
+                    <label>Participante ${i + 1}</label>
+
+                    <input
+                        type="text"
+                        id="player-${i}"
+                        value="${escapeHtml(value)}"
+                        placeholder="Nome do participante"
+                    >
+
+                </div>
+
+            `;
+        }
+    }
+
+
+    function savePlayers() {
+
+        players = [];
+
+        for (let i = 0; i < 20; i++) {
+
+            const input =
+                document.getElementById(`player-${i}`);
+
+            players.push(
+                input.value.trim() ||
+                `Participante ${i + 1}`
+            );
+        }
+
+        saveState();
+
+        createScoreInputs();
+
+        renderRanking();
+
+        renderHistory();
+
+        showStatus(
+            "Participantes salvos com sucesso!",
+            "success"
+        );
+    }
+
+
+    /*
+    =====================================================
+    CAMPOS DE PONTUAÇÃO
+    =====================================================
+    */
+
+    function createScoreInputs() {
+
+        const body =
+            document.getElementById("scoreBody");
+
+        body.innerHTML = "";
+
+        for (let i = 0; i < 20; i++) {
+
+            const name =
+                players[i] || `Participante ${i + 1}`;
+
+            body.innerHTML += `
+
+                <tr>
+
+                    <td>${i + 1}</td>
+
+                    <td>
+                        <strong>${escapeHtml(name)}</strong>
+                    </td>
+
+                    <td>
+
+                        <input
+                            class="score-input"
+                            type="number"
+                            step="0.01"
+                            id="score-${i}"
+                            placeholder="0.00"
+                        >
+
+                    </td>
+
+                </tr>
+
+            `;
+        }
+    }
+
+
+    /*
+    =====================================================
+    SALVAR RODADA
+    =====================================================
+    */
+
+    function saveRound() {
+
+        const number =
+            parseInt(
+                document.getElementById("roundNumber").value
+            );
+
+        const date =
+            document.getElementById("roundDate").value;
+
+        if (!number || number < 1) {
+
+            showStatus(
+                "Informe o número da rodada.",
+                "error"
+            );
+
+            return;
+        }
+
+        const scores = [];
+
+        for (let i = 0; i < 20; i++) {
+
+            const value =
+                document.getElementById(`score-${i}`).value;
+
+            scores.push(
+                value === "" ? 0 : Number(value)
+            );
+        }
+
+
+        const existingIndex =
+            rounds.findIndex(
+                r => r.number === number
+            );
+
+
+        const round = {
+            number: number,
+            date: date,
+            scores: scores
+        };
+
+
+        if (existingIndex >= 0) {
+
+            const confirmUpdate =
+                confirm(
+                    `A rodada ${number} já existe.\n\nDeseja substituir a pontuação dela?`
+                );
+
+            if (!confirmUpdate) {
+                return;
+            }
+
+            rounds[existingIndex] = round;
+
+        } else {
+
+            rounds.push(round);
+        }
+
+
+        rounds.sort(
+            (a, b) => a.number - b.number
+        );
+
+
+        saveState();
+
+
+        renderRanking();
+
+        renderHistory();
+
+        renderRoundList();
+
+        clearRoundForm();
+
+        showStatus(
+            `Rodada ${number} salva com sucesso!`,
+            "success"
+        );
+    }
+
+
+    /*
+    =====================================================
+    LIMPAR FORMULÁRIO
+    =====================================================
+    */
+
+    function clearRoundForm() {
+
+        document.getElementById("roundNumber").value = "";
+
+        for (let i = 0; i < 20; i++) {
+
+            const input =
+                document.getElementById(`score-${i}`);
+
+            if (input) {
+                input.value = "";
+            }
+        }
+    }
+
+
+    /*
+    =====================================================
+    CLASSIFICAÇÃO
+    =====================================================
+    */
+
+    function calculateRanking() {
+
+        const ranking = [];
+
+        for (let i = 0; i < 20; i++) {
+
+            let total = 0;
+
+            rounds.forEach(round => {
+
+                total += Number(
+                    round.scores[i] || 0
+                );
+
+            });
+
+            ranking.push({
+
+                index: i,
+
+                name:
+                    players[i] ||
+                    `Participante ${i + 1}`,
+
+                total: total,
+
+                rounds:
+                    rounds.filter(
+                        round =>
+                            round.scores[i] !== undefined
+                    ).length
+            });
+        }
+
+
+        ranking.sort(
+            (a, b) => b.total - a.total
+        );
+
+
+        return ranking;
+    }
+
+
+    function renderRanking() {
+
+        const ranking =
+            calculateRanking();
+
+        const body =
+            document.getElementById("rankingBody");
+
+        body.innerHTML = "";
+
+
+        ranking.forEach((player, index) => {
+
+            let position = index + 1;
+
+            let medal = "";
+
+            if (position === 1) medal = "🥇";
+
+            if (position === 2) medal = "🥈";
+
+            if (position === 3) medal = "🥉";
+
+
+            body.innerHTML += `
+
+                <tr>
+
+                    <td class="position">
+                        ${medal || position}
+                    </td>
+
+                    <td class="player-name">
+                        ${escapeHtml(player.name)}
+                    </td>
+
+                    <td class="round-score">
+                        ${player.rounds}
+                    </td>
+
+                    <td class="total">
+                        ${formatPoints(player.total)}
+                    </td>
+
+                </tr>
+
+            `;
+        });
+
+
+        renderPodium(ranking);
+    }
+
+
+    /*
+    =====================================================
+    PÓDIO
+    =====================================================
+    */
+
+    function renderPodium(ranking) {
+
+        const podium =
+            document.getElementById("podium");
+
+        podium.innerHTML = "";
+
+
+        if (rounds.length === 0) {
+
+            podium.innerHTML = `
+                <div class="empty" style="grid-column:1/-1;">
+                    Nenhuma rodada cadastrada ainda.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const medals = [
+            ["🥇", "first"],
+            ["🥈", "second"],
+            ["🥉", "third"]
+        ];
+
+
+        for (let i = 0; i < 3; i++) {
+
+            if (!ranking[i]) continue;
+
+            podium.innerHTML += `
+
+                <div class="podium-card ${medals[i][1]}">
+
+                    <div class="medal">
+                        ${medals[i][0]}
+                    </div>
+
+                    <div class="podium-name">
+                        ${escapeHtml(ranking[i].name)}
+                    </div>
+
+                    <div class="podium-points">
+                        ${formatPoints(ranking[i].total)}
+                    </div>
+
+                    <small>pontos</small>
+
+                </div>
+
+            `;
+        }
+    }
+
+
+    /*
+    =====================================================
+    HISTÓRICO
+    =====================================================
+    */
+
+    function renderHistory() {
+
+        const head =
+            document.getElementById("historyHead");
+
+        const body =
+            document.getElementById("historyBody");
+
+
+        head.innerHTML = "";
+
+        body.innerHTML = "";
+
+
+        if (rounds.length === 0) {
+
+            body.innerHTML = `
+
+                <tr>
+                    <td class="empty">
+                        Nenhuma rodada cadastrada.
+                    </td>
+                </tr>
+
+            `;
+
+            return;
+        }
+
+
+        let headerHtml = `
+            <tr>
+                <th>Participante</th>
+        `;
+
+
+        const historyRounds = rounds.slice(-5);
+
+        historyRounds.forEach(round => {
+
+            headerHtml += `
+                <th>Rodada ${round.number}</th>
+            `;
+
+        });
+
+
+        headerHtml += `
+                <th>Total</th>
+            </tr>
+        `;
+
+
+        head.innerHTML = headerHtml;
+
+
+        for (let i = 0; i < 20; i++) {
+
+            const total = rounds.reduce(
+                (sum, round) =>
+                    sum + Number(round.scores[i] || 0),
+                0
+            );
+
+            let html = `
+                <tr>
+                    <td>
+                        <strong>
+                            ${escapeHtml(
+                                players[i] ||
+                                `Participante ${i + 1}`
+                            )}
+                        </strong>
+                    </td>
+            `;
+
+
+            historyRounds.forEach(round => {
+
+                const score =
+                    Number(round.scores[i] || 0);
+
+                html += `
+                    <td>
+                        ${formatPoints(score)}
+                    </td>
+                `;
+
+            });
+
+
+            html += `
+                    <td class="total">
+                        ${formatPoints(total)}
+                    </td>
+                </tr>
+            `;
+
+
+            body.innerHTML += html;
+        }
+    }
+
+
+    /*
+    =====================================================
+    LISTA DE RODADAS
+    =====================================================
+    */
+
+    function renderRoundList() {
+
+        const container =
+            document.getElementById("roundList");
+
+        container.innerHTML = "";
+
+
+        if (rounds.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    Nenhuma rodada cadastrada.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        rounds.forEach(round => {
+
+            const total =
+                round.scores.reduce(
+                    (sum, value) =>
+                        sum + Number(value || 0),
+                    0
+                );
+
+
+            const date =
+                round.date
+                    ? new Date(
+                        round.date + "T00:00:00"
+                    ).toLocaleDateString("pt-BR")
+                    : "Sem data";
+
+
+            container.innerHTML += `
+
+                <div class="round-item">
+
+                    <div>
+                        <strong>
+                            Rodada ${round.number}
+                        </strong>
+
+                        <br>
+
+                        <small>
+                            ${date}
+                        </small>
+                    </div>
+
+                    <div>
+                        <strong>
+                            ${formatPoints(total)}
+                        </strong>
+                        pontos somados
+                    </div>
+
+                    <button
+                        class="btn-red"
+                        onclick="deleteRound(${round.number})"
+                    >
+                        🗑️ Excluir
+                    </button>
+
+                </div>
+
+            `;
+        });
+    }
+
+
+    /*
+    =====================================================
+    EXCLUIR RODADA
+    =====================================================
+    */
+
+    function deleteRound(number) {
+
+        const confirmDelete =
+            confirm(
+                `Tem certeza que deseja excluir a rodada ${number}?`
+            );
+
+        if (!confirmDelete) {
+            return;
+        }
+
+
+        rounds =
+            rounds.filter(
+                round =>
+                    round.number !== number
+            );
+
+
+        saveState();
+
+
+        renderRanking();
+
+        renderHistory();
+
+        renderRoundList();
+
+
+        showStatus(
+            `Rodada ${number} excluída.`,
+            "success"
+        );
+    }
+
+
+    /*
+    =====================================================
+    BACKUP
+    =====================================================
+    */
+
+    function exportData() {
+
+        const data = {
+
+            players: players,
+
+            rounds: rounds,
+
+            exportedAt:
+                new Date().toISOString()
+
+        };
+
+
+        const blob =
+            new Blob(
+                [
+                    JSON.stringify(
+                        data,
+                        null,
+                        2
+                    )
+                ],
+                {
+                    type: "application/json"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download =
+            "backup-campeonato-cartola.json";
+
+
+        link.click();
+
+
+        URL.revokeObjectURL(url);
+    }
+
+
+    function importData(event) {
+
+        const file =
+            event.target.files[0];
+
+
+        if (!file) return;
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload = async function(e) {
+
+            try {
+
+                const data =
+                    JSON.parse(e.target.result);
+
+
+                if (
+                    !Array.isArray(data.players) ||
+                    !Array.isArray(data.rounds)
+                ) {
+
+                    throw new Error(
+                        "Arquivo inválido."
+                    );
+
+                }
+
+
+                players = data.players;
+
+                rounds = data.rounds;
+
+
+                await saveState();
+
+
+                createPlayerInputs();
+
+                createScoreInputs();
+
+                renderRanking();
+
+                renderHistory();
+
+                renderRoundList();
+
+
+                showStatus(
+                    "Backup restaurado com sucesso!",
+                    "success"
+                );
+
+
+            } catch (error) {
+
+                showStatus(
+                    "Não foi possível restaurar o backup.",
+                    "error"
+                );
+
+            }
+
+        };
+
+
+        reader.readAsText(file);
+    }
+
+
+    /*
+    =====================================================
+    UTILITÁRIOS
+    =====================================================
+    */
+
+    function formatPoints(value) {
+
+        return Number(value || 0)
+            .toFixed(2)
+            .replace(".", ",");
+    }
+
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
+
+
+    function showStatus(message, type) {
+
+        const status =
+            document.getElementById("status");
+
+
+        status.textContent = message;
+
+        status.className =
+            "status " + type;
+
+
+        setTimeout(() => {
+
+            status.className =
+                "status";
+
+        }, 3000);
+    }
+
+
+    /*
+    =====================================================
+    INICIAR
+    =====================================================
+    */
+
+    init();
+
+</script>
+
+</body>
+</html>
